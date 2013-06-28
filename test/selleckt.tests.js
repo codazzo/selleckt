@@ -516,6 +516,81 @@ define(['lib/selleckt'],
                 });
             });
         });
+
+        describe('search', function(){
+            var selectHtml = '<select>' +
+                    '<option value="foo">foo</option>' +
+                    '<option value="bar">bar</option>' +
+                    '<option value="baz">baz</option>' +
+                    '<option value="foofoo">foofoo</option>' +
+                    '<option value="foobaz">foobaz</option>' +
+                    '</select>',
+                template =
+                '<div class="{{className}}" tabindex=1>' +
+                    '<div class="selected">' +
+                        '<span class="selectedText">{{selectedItemText}}</span><i class="icon-arrow-down"></i>' +
+                    '</div>' +
+                    '<ul class="items">' +
+                        '<li class="searchContainer">' +
+                            '<input class="search"></input>' +
+                        '</li>' +
+                        '{{#items}}' +
+                        '<li class="item" data-text="{{label}}" data-value="{{value}}">' +
+                            '{{label}}' +
+                        '</li>' +
+                        '{{/items}}' +
+                    '</ul>' +
+                '</div>',
+                $searchInput;
+
+            beforeEach(function(){
+                selleckt = Selleckt.create({
+                    mainTemplate : template,
+                    $selectEl : $(selectHtml),
+                    className: 'selleckt',
+                    selectedClass: 'selected',
+                    selectedTextClass: 'selectedText',
+                    itemsClass: 'items',
+                    itemClass: 'item',
+                    selectedClassName: 'isSelected',
+                    highlightClassName: 'isHighlighted'
+                });
+
+                selleckt.render();
+
+                $searchInput = selleckt.$sellecktEl.find('.search');
+            });
+
+            afterEach(function(){
+                $searchInput = undefined;
+            });
+
+            it('displays a searchbox if options.showSearch is true');
+            it('hides the searchbox if the available options are fewer than options.searchThreshold');
+
+            describe('filtering', function(){
+                it('can annotate the items with matchIndexes', function(){
+                    var output = selleckt._findMatchingOptions(selleckt.items, 'ba');
+
+                    expect(output).toEqual([
+                        { label: 'foo', value: 'foo', data:{} },
+                        { label: 'bar', value: 'bar', data:{}, matchStart: 0, matchEnd: 1 },
+                        { label: 'baz', value: 'baz', data:{}, matchStart: 0, matchEnd: 1 },
+                        { label: 'foofoo', value: 'foofoo', data:{} },
+                        { label: 'foobaz', value: 'foobaz', data:{}, matchStart: 3, matchEnd: 4 }
+                    ]);
+                });
+
+                xit('filters the available options as the user types in the searchbox', function(){
+                    var _findMatchingOptionsSpy = sinon.spy(selleckt, '_findMatchingOptions');
+
+                    $searchInput.val('baz').trigger('keyup');
+
+                    expect(selleckt.$items.find('.item mark').length).toEqual(2);
+                });
+                it('wraps matched text in the matching options with a "mark" tag');
+            });
+        });
     });
 
     describe('multiselleckt', function(){

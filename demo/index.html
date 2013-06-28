@@ -76,9 +76,12 @@ $select3.data('selleckt').$sellecktEl.on('click', '.add', function(e){
                     <span class="selectedText">{{selectedItemText}}</span><i class="icon-arrow-down"></i>
                 </div>
                 <ul class="items">
+                    <li class="searchContainer">
+                        <input class="search"></input>
+                    </li>
                     {{#items}}
                     <li class="item" data-text="{{label}}" data-value="{{value}}">
-                        {{label}}
+                        <span class="itemText">{{label}}</span>
                     </li>
                     {{/items}}
                 </ul>

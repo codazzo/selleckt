@@ -100,6 +100,9 @@
     .dropdown .selectionItem:hover i.edit {
         visibility: visible;
     }
+.dropdown .items mark {
+    color: red;
+}
 .dropdown ul.selections {
     list-style-type: none;
 }
