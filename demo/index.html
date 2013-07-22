@@ -25,11 +25,26 @@
             })()
         }
         </script>
+        <script type="text/javascript">
+            $(function(){
+                var container = $('.demo-2');
+                $('.overflow-control').change(function(){
+                    if ($(this).is(':checked')) {
+                        container.css('overflow', 'hidden');
+                    } else {
+                        container.css('overflow', 'visible');
+                    }
+                });
+            })
+        </script>
         <script src="../lib/selleckt.js"></script>
 
         <style>
             .demo {
                 margin:40px 0;
+            }
+            .demo-2 {
+                height: 300px;
             }
             .tom {
                 position: fixed;
@@ -63,6 +78,7 @@
             <div class="demo demo-2">
                 <h2>Single select with search</h2>
                 <p>Replaces a standard select element. Adds filtering functionality.</p>
+                <p><input type="checkbox" class="overflow-control"/>Hide overflow?</p>
                 <select id="demo-2">
                     <option value="1">Foo</option>
                     <option value="2">Bar</option>
